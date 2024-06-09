@@ -1,0 +1,34 @@
+<!-- The simplest HTML validation feature is the required attribute. 
+ To make an input mandatory, add this attribute to the element. When this attribute is set, the element matches the :required UI pseudo-class and the form won't submit, displaying an error message on submission when the input is empty. 
+ While empty, the input will also be considered invalid, matching the :invalid UI pseudo-class.
+
+Add a required attribute to your input, as shown below. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit Preference Form</title>
+    <style>
+        input:invalid {
+            border: 2px dashed red;
+        }
+
+        input:invalid:required {
+            background-image: linear-gradient(to right, pink, lightgreen);
+        }
+
+        input:valid {
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label for="choose">Would you prefer a banana or cherry? (required)</label>
+        <input id="choose" name="i-like" required pattern="banana|cherry" />
+        <button>Submit</button>
+    </form>
+</body>
+</html>

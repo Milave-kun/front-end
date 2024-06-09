@@ -1,0 +1,131 @@
+<!-- Implementing a customized error message
+As you saw in the HTML validation constraint examples earlier, each time a user tries to submit an invalid form, the browser displays an error message. The way this message is displayed depends on the browser.
+
+These automated messages have two drawbacks:
+
+There is no standard way to change their look and feel with CSS.
+They depend on the browser locale, which means that you can have a page in one language but an error message displayed in another language, as seen in the following Firefox screenshot.
+Example of an error message with Firefox in French on an English page
+Customizing these error messages is one of the most common use cases of the Constraint Validation API. Let's work through a simple example of how to do this.
+
+We'll start with some simple HTML (feel free to put this in a blank HTML file; use a fresh copy of fruit-start.html as a basis, if you like): -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Validation Form</title>
+    <style>
+        body {
+            font: 1em sans-serif;
+            width: 200px;
+            padding: 0;
+            margin: 0 auto;
+        }
+      
+        p * {
+            display: block;
+        }
+      
+        input[type="email"] {
+            appearance: none;
+            width: 100%;
+            border: 1px solid #333;
+            margin: 0;
+            font-family: inherit;
+            font-size: 90%;
+            box-sizing: border-box;
+        }
+      
+        /* This is our style for the invalid fields */
+        input:invalid {
+            border-color: #900;
+            background-color: #fdd;
+        }
+      
+        input:focus:invalid {
+            outline: none;
+        }
+      
+        /* This is the style of our error messages */
+        .error {
+            width: 100%;
+            padding: 0;
+            font-size: 80%;
+            color: white;
+            background-color: #900;
+            border-radius: 0 0 5px 5px;
+            box-sizing: border-box;
+        }
+      
+        .error.active {
+            padding: 0.3em;
+        }
+    </style>
+</head>
+<body>
+    <form novalidate>
+        <p>
+            <label for="mail">
+                <span>Please enter an email address:</span>
+                <input type="email" id="mail" name="mail" required minlength="8" />
+                <span class="error" aria-live="polite"></span>
+            </label>
+        </p>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // There are many ways to pick a DOM node; here we get the form itself and the email
+        // input box, as well as the span element into which we will place the error message.
+        const form = document.querySelector("form");
+        const email = document.getElementById("mail");
+        const emailError = document.querySelector("#mail + span.error");
+
+        email.addEventListener("input", (event) => {
+            // Each time the user types something, we check if the
+            // form fields are valid.
+            if (email.validity.valid) {
+                // In case there is an error message visible, if the field
+                // is valid, we remove the error message.
+                emailError.textContent = ""; // Reset the content of the message
+                emailError.className = "error"; // Reset the visual state of the message
+            } else {
+                // If there is still an error, show the correct error
+                showError();
+            }
+        });
+
+        form.addEventListener("submit", (event) => {
+            // if the email field is valid, we let the form submit
+            if (!email.validity.valid) {
+                // If it isn't, we display an appropriate error message
+                showError();
+                // Then we prevent the form from being sent by canceling the event
+                event.preventDefault();
+            }
+        });
+
+        function showError() {
+            if (email.validity.valueMissing) {
+                // If the field is empty,
+                // display the following error message.
+                emailError.textContent = "You need to enter an email address.";
+            } else if (email.validity.typeMismatch) {
+                // If the field doesn't contain an email address,
+                // display the following error message.
+                emailError.textContent = "Entered value needs to be an email address.";
+            } else if (email.validity.tooShort) {
+                // If the data is too short,
+                // display the following error message.
+                emailError.textContent = `Email should be at least ${email.minLength} characters; you entered ${email.value.length}.`;
+            }
+
+            // Set the styling appropriately
+            emailError.className = "error active";
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Validation</title>
+  <script>
+    const validateForm = () => {
+      const form = document.forms["myForm"];
+      const name = form["fname"].value;
+
+      if (name === "") {
+        alert("Name must be filled out");
+        return false;
+      }
+
+      return true;
+    }
+  </script>
+</head>
+<body>
+
+  <form name="myForm" action="/action_page.php" onsubmit="return validateForm()" method="post">
+    Name: <input type="text" name="fname">
+    <input type="submit" value="Submit">
+  </form>
+
+</body>
+</html>
