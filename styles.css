@@ -1,0 +1,25 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: #3498db;
+    position: relative;
+    animation: moveRight 2s infinite alternate;
+}
+
+@keyframes moveRight {
+    0% {
+        left: 0;
+    }
+    100% {
+        left: 300px;
+    }
+}
